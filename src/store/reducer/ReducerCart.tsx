@@ -17,7 +17,10 @@ const initialState: CartType[] = [
     }
 ]
 
-export const ReducerCart: Reducer<CartType[], CartAction> = (state = initialState, actions: CartAction) => {
+export const ReducerCart: Reducer<CartType[], CartAction> = (
+    state = initialState, 
+    actions: CartAction
+) => {
     console.log('khj', actions.type);
     switch (actions.type) {
         case types.ADD_TO_CART: {

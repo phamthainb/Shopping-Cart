@@ -81,12 +81,9 @@ const DeleteBtn = styled.i`
     }
 `
 function CartItem({ id, quantity }: CartType) {
-    const listProducts: ProductType[] = 
-        useSelector((state: ReturnType<typeof myReducers>) => state.ReducerProduct);
-    const listCarts: CartType[] = 
-        useSelector((state: ReturnType<typeof myReducers>) => state.ReducerCart);
+    const listProducts: ProductType[] = useSelector((state: ReturnType<typeof myReducers>) => state.ReducerProduct);
     const dispatch = useDispatch();
-    let quantityLocal: number = -1;
+    
     let itemToShow: ProductType = {
         id: -1,
         name: '',
@@ -96,14 +93,13 @@ function CartItem({ id, quantity }: CartType) {
     listProducts.map(item => {
         if (id === item.id) itemToShow = item;
     })
-    listCarts.map(item => {
-        if (id === item.id) quantityLocal=item.quantity;
-    })
 
-    // const [quantityLocal, setQuantityLocal] = useState<number>(quantity);
-    // useEffect(() => {
-    //     setQuantityLocal(quantity);
-    // });
+    const [quantityLocal, setQuantityLocal] = useState<number>(quantity);
+
+    useEffect(() => {
+        setQuantityLocal(quantity);
+        console.log('jj');
+    });
 
     return (
         <CartItemContainer>
