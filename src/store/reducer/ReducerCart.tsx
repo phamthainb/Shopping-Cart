@@ -41,7 +41,7 @@ export const ReducerCart: Reducer<CartType[], CartAction> = (
                     }
                 ]
 
-            return newList;
+                return [...newList];
 
         }
 
@@ -49,21 +49,21 @@ export const ReducerCart: Reducer<CartType[], CartAction> = (
             let newList = state;
             const index = newList.findIndex(item => item.id === actions.payload);
             newList.splice(index, 1);
-            return newList;
+            return [...newList];
         }
 
         case types.INCREASE_IN_CART: {
-            let newList = state;
+            let newList = [...state];
             const index = newList.findIndex(item => item.id === actions.payload);
             newList[index] = {
                 ...newList[index],
                 quantity: newList[index].quantity + 1
             }
-            return newList;
+            return [...newList];
         }
 
         case types.DECREASE_IN_CART: {
-            let newList = state;
+            let newList = [...state];
             const index = newList.findIndex(item => item.id === actions.payload);
             if (newList[index].quantity === 1) newList.splice(index, 1);
             else
@@ -71,7 +71,7 @@ export const ReducerCart: Reducer<CartType[], CartAction> = (
                     ...newList[index],
                     quantity: newList[index].quantity - 1
                 }
-            return newList;
+            return [...newList];
         }
 
         default:
