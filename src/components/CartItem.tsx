@@ -7,7 +7,13 @@ import { CartType } from '../store/reducer/ReducerCart';
 import { ProductType } from '../store/reducer/ReducerProduct';
 import { myReducers } from '../store/store';
 
-const CartItemContainer = styled.li`
+interface Props{
+    id:number,
+    quantity:number,
+    itemToShow: ProductType
+}
+
+export const CartItemContainer = styled.li`
     display: flex;
     box-sizing: border-box;
     align-items:center;
@@ -15,16 +21,16 @@ const CartItemContainer = styled.li`
     color: orange;
     /* border: 1px solid orange; */
 `
-const CartItemImgContainerBig = styled.div`
+export const CartItemImgContainerBig = styled.div`
     width: 10%;
 `
-const CartItemImgContainer = styled.div`
+export const CartItemImgContainer = styled.div`
     position: relative;
     padding-bottom: 130%;
     overflow: hidden;
 `
 
-const CartItemImg = styled.img`
+export const CartItemImg = styled.img`
     position: absolute;
     top:0;
     left:0;
@@ -33,7 +39,7 @@ const CartItemImg = styled.img`
     object-fit:cover;
 `
 
-const CartItemName = styled.div`
+export const CartItemName = styled.div`
     display:flex;
     align-items:center;
     font-size: 23px;
@@ -41,19 +47,19 @@ const CartItemName = styled.div`
     width: 40%;
     padding-left: 40px;
 `
-const CartItemPrice = styled(CartItemName)`
+export const CartItemPrice = styled(CartItemName)`
     width: 13%;
     font-size: 20px;
     font-weight:600;
 `
 
-const QuantityContainer = styled.div`
+export const QuantityContainer = styled.div`
     /* width: 17%; */
     display:flex;
     font-size: 25px;
 `
 
-const QuantityBtn = styled.span`
+export const QuantityBtn = styled.span`
     width: 30px;
     height:28px;
     padding:0;
@@ -71,7 +77,7 @@ const QuantityBtn = styled.span`
     }
 `
 
-const DeleteBtn = styled.i`
+export const DeleteBtn = styled.i`
     font-size: 25px;
     cursor:pointer;
     padding-left: 30px;
@@ -80,31 +86,25 @@ const DeleteBtn = styled.i`
         color: #fd6e00;
     }
 `
-function CartItem({ id, quantity }: CartType) {
-    const listProducts: ProductType[] = useSelector((state: ReturnType<typeof myReducers>) => state.ReducerProduct);
+function CartItem({ id, quantity, itemToShow }: Props) {
     const dispatch = useDispatch();
-    
-    let itemToShow: ProductType = {
-        id: -1,
-        name: '',
-        img: '',
-        price: -1
-    };
-    listProducts.map(item => {
-        if (id === item.id) itemToShow = item;
-    })
 
-    const [quantityLocal, setQuantityLocal] = useState<number>(quantity);
+    const [idState, setIdState] = useState<number>(id);
+    const [quantityState, setQuantityState] = useState<number>(quantity);
+    const [itemState, setItemState] = useState<ProductType>(itemToShow);
 
     useEffect(() => {
-        setQuantityLocal(quantity);
+        // setQuantityLocal(quantity);
         console.log('jj');
     });
+
 
     return (
         <CartItemContainer>
             <CartItemImgContainerBig>
-                <CartItemImgContainer>
+                <CartItemImgContainer
+                    onClick={()=> console.log(quantity)}
+                >
                     <CartItemImg src={itemToShow.img} />
                 </CartItemImgContainer>
             </CartItemImgContainerBig>
@@ -119,7 +119,7 @@ function CartItem({ id, quantity }: CartType) {
                         dispatch(decreaseInCart(id));
                     }}
                 >-</QuantityBtn>
-                {quantityLocal}
+                {quantity}
                 <QuantityBtn
                     onClick={()=>{
                         dispatch(increaseInCart(id));

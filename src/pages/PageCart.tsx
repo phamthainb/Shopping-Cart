@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components'
 import CartItem from '../components/CartItem';
 import { CartType } from '../store/reducer/ReducerCart';
+import { ProductType } from '../store/reducer/ReducerProduct';
 import { myReducers } from '../store/store';
 
 const PageCartContainer = styled.div`
@@ -39,13 +40,27 @@ const ListCart = styled.ul`
 function PageCart() {
     const listCarts: CartType[] = useSelector((state: ReturnType<typeof myReducers>) => state.ReducerCart);
     const history = useHistory();
+    const listProducts: ProductType[] = useSelector((state: ReturnType<typeof myReducers>) => state.ReducerProduct);
+    const elms = listCarts.map((item, index) => {
+        console.log(item.id, '  ', item.quantity);
+        let itemToShow: ProductType = {
+            id: -1,
+            name: '',
+            img: '',
+            price: -1
+        };
+        listProducts.map(itemSub => {
+            if (itemSub.id === item.id) itemToShow = itemSub;
+        })
+        return <CartItem key={index} id={item.id} quantity={item.quantity} itemToShow={itemToShow} />
+    })
     return (
         <PageCartContainer>
-            {/* <div
-                onClick={()=>{
-                    console.log(`so luong gio hang: ${listCarts.length}`)
-                }}                
-            >click</div> */}
+            <div
+                onClick={() => {
+                    console.log(listCarts);
+                }}
+            >click</div>
             <StoreIconContainer
                 onClick={() => history.push('/')}
             >
@@ -55,14 +70,24 @@ function PageCart() {
 
             <ListCart>
                 {
-                    listCarts.length===0 &&
+                    listCarts.length === 0 &&
                     <EmptyImg src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq_kpRSnI8fOnDs6_BAA3Zs0yWyCaj4BsTRQ&usqp=CAU' />
                 }
                 {
-                    listCarts.length >0 &&
-                    listCarts.map((item, index) => {
-                        return <CartItem key={index} id={item.id} quantity={item.quantity}/>
-                    })
+                    listCarts.length > 0 && elms
+                    // listCarts.map((item, index) => {
+                    //     console.log(item.id, '  ', item.quantity);
+                    //     let itemToShow: ProductType = {
+                    //         id: -1,
+                    //         name: '',
+                    //         img: '',
+                    //         price: -1
+                    //     };
+                    //     listProducts.map(itemSub => {
+                    //         if (itemSub.id === item.id) itemToShow = itemSub;
+                    //     })
+                    //     return <CartItem key={index} id={item.id} quantity={item.quantity} itemToShow={itemToShow} />
+                    // })
                 }
             </ListCart>
         </PageCartContainer>
